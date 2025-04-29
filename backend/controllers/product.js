@@ -1,0 +1,154 @@
+const Products = require('../models/product.js');
+const ProductFilter = require('../utils/productFilter.js');
+const cloudinary = require('cloudinary').v2
+
+
+const allProducts = async(req,res) => {
+    const resultPerPage = 10;
+    const productFilter = new ProductFilter(Products.find(), req.query).search().filter().pagination(resultPerPage); 
+    const products = await productFilter.query;
+    
+    res.staus(200).json({
+        products
+    })
+}
+
+const adminProduct = async(req,res,next) => {
+
+    const products = await Products.find();
+    
+    res.staus(200).json({
+        products
+    })
+} 
+
+
+const detailProducts = async(req,res) => {
+    const product = await Products.findById(req.params.id);
+
+    res.staus(200).json({
+        product
+    })
+}
+
+//admin
+
+const createProducts = async(req,res,next) => {
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+        images.push(req.body.images)
+    } else {
+        images = req.body.images;
+    }
+
+    let allImage = [];
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.uploader.upload(images[i], {
+            folder: "products"
+        });
+
+        allImage.push({
+            public_id: result.public_id,
+            url: result.secure_url
+        })
+        
+    }
+
+    req.body.images = allImage; 
+    req.body.user = req.user.id;
+
+    const product = await Products.create(req.body);
+
+    res.staus(201).json({
+        product
+    })
+}
+
+const deleteProducts = async(req,res,next) => {
+    const product = await Products.findById(req.params.id);
+
+    for (let i = 0; i < product.length; i++) {
+        await cloudinary.uploader.destroy(product.images[i].public_id);
+        
+    }
+
+    await product.remove();
+    res.staus(200).json({
+        message: "Ürün başarıyla silindi..."
+    })
+}
+
+const updateProducts = async(req,res,next) => {
+    const product = await Products.findById(req.params.id);
+
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+        images.push(req.body.images)
+    } else {
+        images = req.body.images;
+    }
+
+    if (images !== undefined) {
+        for (let i = 0; i < product.length; i++) {
+            await cloudinary.uploader.destroy(product.images[i].public_id);
+            
+        }
+    }
+
+    let allImage = [];
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.uploader.upload(images[i], {
+            folder: "products"
+        });
+
+        allImage.push({
+            public_id: result.public_id,
+            url: result.secure_url
+        })
+        
+    }
+
+    req.body.images = allImage; 
+
+
+    product = await Products.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true},)
+    
+    res.staus(200).json({
+        product
+    })
+}
+
+const createReview = async(req,res,next) => {
+    const {productId, comment, rating} = req.body;
+
+    const review = {
+        user: req.user._id,
+        name: req.user.name,
+        comment,
+        rating: Number(rating)
+    }
+    const product = await Products.findById(productId);
+
+    product.reviews.push(review);
+
+    let avg = 0;
+
+    product.reviews.forEach(rev => {
+        avg += rev.rating;
+    });
+
+    product.rating = avg / product.reviews.length;
+
+    await product.save({validateBeforeSave: false})
+
+    res.staus(200).json({
+        message: "Yorumun Eklendi..."
+    }
+    )
+}
+
+module.exports = {allProducts, detailProducts, createProducts, deleteProducts, updateProducts, createReview, adminProduct }
