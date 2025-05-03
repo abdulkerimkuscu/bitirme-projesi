@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const db = () => {
-    mongoose.connect('mongodb+srv://kuscu2708:12345@cluster0.ytiwbzv.mongodb.net/', {
+    mongoose.connect('mongodb+srv://kuscu2708:12345@cluster0.ytiwbzv.mongodb.net/myshop', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(() =>{

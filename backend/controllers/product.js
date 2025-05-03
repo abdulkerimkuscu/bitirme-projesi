@@ -4,20 +4,26 @@ const cloudinary = require('cloudinary').v2
 
 
 const allProducts = async(req,res) => {
-    const resultPerPage = 10;
-    const productFilter = new ProductFilter(Products.find(), req.query).search().filter().pagination(resultPerPage); 
-    const products = await productFilter.query;
     
-    res.staus(200).json({
-        products
-    })
+     try {
+        const resultPerPage = 10;
+        const productFilter = new ProductFilter(Products.find(), req.query).search().filter().pagination(resultPerPage); 
+        const products = await productFilter.query;
+        
+        res.status(200).json({
+            products
+        });
+    } catch (err) {
+        console.error("HATA /products:", err);
+        res.status(500).json({ message: err.message });
+    }
 }
 
 const adminProduct = async(req,res,next) => {
 
     const products = await Products.find();
     
-    res.staus(200).json({
+    res.status(200).json({
         products
     })
 } 
@@ -26,7 +32,7 @@ const adminProduct = async(req,res,next) => {
 const detailProducts = async(req,res) => {
     const product = await Products.findById(req.params.id);
 
-    res.staus(200).json({
+    res.status(200).json({
         product
     })
 }
@@ -61,7 +67,7 @@ const createProducts = async(req,res,next) => {
 
     const product = await Products.create(req.body);
 
-    res.staus(201).json({
+    res.status(201).json({
         product
     })
 }
@@ -75,7 +81,7 @@ const deleteProducts = async(req,res,next) => {
     }
 
     await product.remove();
-    res.staus(200).json({
+    res.status(200).json({
         message: "Ürün başarıyla silindi..."
     })
 }
@@ -117,7 +123,7 @@ const updateProducts = async(req,res,next) => {
 
     product = await Products.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true},)
     
-    res.staus(200).json({
+    res.status(200).json({
         product
     })
 }
@@ -145,7 +151,7 @@ const createReview = async(req,res,next) => {
 
     await product.save({validateBeforeSave: false})
 
-    res.staus(200).json({
+    res.status(200).json({
         message: "Yorumun Eklendi..."
     }
     )

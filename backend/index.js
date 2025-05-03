@@ -11,8 +11,8 @@ dotenv.config();
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.APİ_KEY, 
-    api_secret: process.env.APİ_SECRET,
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET,
 });
 
 const app = express();
@@ -33,3 +33,6 @@ const PORT =  4000;
 app.listen(PORT, () => {
     console.log("server running on port 4000 ")
 })
+
+
+  
