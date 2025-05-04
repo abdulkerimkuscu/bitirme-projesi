@@ -8,7 +8,11 @@ const Home = () => {
     const {products, loading} = useSelector(state => state.products)
 
     useEffect(() => {
-        dispatch(getProducts())
+        dispatch(getProducts({
+          keyword: "",
+          price: { min: 0, max: 30000 },
+          category: ""
+        }))
     },[dispatch])
 
  

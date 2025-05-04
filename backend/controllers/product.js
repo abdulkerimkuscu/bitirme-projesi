@@ -1,13 +1,18 @@
 const Products = require('../models/product.js');
 const ProductFilter = require('../utils/productFilter.js');
 const cloudinary = require('cloudinary').v2
-
+const qs = require('qs');
 
 const allProducts = async(req,res) => {
     
      try {
         const resultPerPage = 10;
-        const productFilter = new ProductFilter(Products.find(), req.query).search().filter().pagination(resultPerPage); 
+        const parsedQuery = qs.parse(req.query);
+
+        const productFilter = new ProductFilter(Products.find(), parsedQuery)
+            .search()
+            .filter()
+            .pagination(resultPerPage);
         const products = await productFilter.query;
         
         res.status(200).json({

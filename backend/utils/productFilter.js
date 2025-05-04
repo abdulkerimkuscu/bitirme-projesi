@@ -1,3 +1,6 @@
+
+
+
 class ProductFilter {
     constructor(query,queryStr){
         this.query = query;
@@ -18,9 +21,8 @@ class ProductFilter {
     filter(){
         const queryCopy = {...this.queryStr};
         const deleteArea = ["keyword", "page", "limit"];
-        deleteArea.forEach(item => delete queryCopy[item]
-        ) 
-        
+        deleteArea.forEach(item => delete queryCopy[item]) 
+
         let queryStr =JSON.stringify(queryCopy);
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, key => `$${key}`);
 
