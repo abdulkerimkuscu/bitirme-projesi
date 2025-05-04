@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { LuShoppingBasket } from "react-icons/lu";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getKeyword } from '../redux/generalSlice';
 
@@ -9,6 +9,7 @@ import { getKeyword } from '../redux/generalSlice';
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const {user, isAuth} = useSelector(state => state.user)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,6 +35,8 @@ const keywordFunc = () => {
       setKeyword("")
       navigate("/products")
 }
+console.log(user, "uuuuuuu");
+
   return (
     <div className='bg-orange-100 h-16 px-5 flex items-center justify-between '>
       <div className='text-3xl'>
@@ -45,10 +48,10 @@ const keywordFunc = () => {
           <button onClick={keywordFunc} className='p2 ml-1 bg-white cursor pointer'>Ara</button>
           </div>
         <div className='relative'>
-          <img onClick={() =>{setOpenMenu(!openMenu)}} className='w-8 h-8 rounded-full' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s" />
+          <img onClick={() =>{setOpenMenu(!openMenu)}} className='w-8 h-8 rounded-full' src={user ? user?.avatar?.url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s"} />
          {openMenu && <div className='absolute rigth-0 mt-3 w-[100px] bg-white shadow-lg shadow-green-600'>
             {menuItem.map ((item,i) => (
-              <div className='px-2 py-1 hover:bg-blue-100' key={i}>{item.name}</div>
+              <button onClick={() => navigate(item.url)} className='px-2 py-1 ' key={i}>{item.name}</button>
             ))}
           </div>}
         </div>

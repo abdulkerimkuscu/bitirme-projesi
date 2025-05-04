@@ -162,7 +162,7 @@ const resetPassword = async (req,res) =>{
 
     await user.save();
 
-    const token =  jwt.sign({id: user._id}, "SECRETTOKEN", {expiresIn: "1h"})
+    const token =  jwt.sign({id: user._id}, "SECRETTOKEN", {expiresIn: "24h"})
 
     const cookieOptions ={
         httpOnly: true,

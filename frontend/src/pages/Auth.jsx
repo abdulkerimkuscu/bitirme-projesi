@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login, register } from '../redux/userSlice'
+import { useNavigate } from 'react-router-dom'
 const Auth = () => {
     const [signUp, setSignUp] = useState(true)
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const {user, isAuth} = useSelector(state => state.user)
     const [data, setData] = useState({ name: "", email: "", password: "", avatar: "" })
     const [preview, setPreview] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s")
 
@@ -31,8 +34,12 @@ const Auth = () => {
             setData(prev => ({...prev, [e.target.name]: e.target.value}) )
         }
     }
+    useEffect(() => {
+        navigate("/")
+    },[isAuth])
 
-  
+    console.log(user, isAuth, "user");
+    
     return (
         <div className='min-h-screen flex items-center justify-center'>
             <div className='w-1/3 -myt-10 border p-2 text-center rounded-md   '>

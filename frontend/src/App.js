@@ -10,20 +10,17 @@ import Auth from "./pages/Auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { profile } from "./redux/userSlice";
+import Profile from "./pages/Profile";
 
 function App() {
   const dispatch = useDispatch();
-  const { user, isAuth } = useSelector(state => state.user || {});
+  const { user, isAuth } = useSelector(state => state.user );
 
 
   useEffect(() => {
     dispatch(profile())
   }, [dispatch])
 
-  console.log(user, isAuth, "authhh");
-  
- 
-  
 
   return (
     <Router>
@@ -31,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<Detail />} />
       </Routes>
