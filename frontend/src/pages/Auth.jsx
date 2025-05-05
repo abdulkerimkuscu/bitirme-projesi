@@ -35,7 +35,9 @@ const Auth = () => {
         }
     }
     useEffect(() => {
-        navigate("/")
+        if (isAuth) {
+            navigate("/")
+        }
     },[isAuth])
 
     console.log(user, isAuth, "user");

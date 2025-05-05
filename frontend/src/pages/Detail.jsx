@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import Button from '../components/Button';
+import { addToCart } from '../redux/cartSlice';
 const Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -28,10 +29,19 @@ const Detail = () => {
   };
 
   const addBasket = () => {
+    const data = {
+      id: product?.product?._id,
+      name: product?.product?.name,
+      image: product?.product?.images?.[0],
+      price: product?.product?.price,
+      quantity: quantity
 
+    }
+
+    dispatch(addToCart(data))
   }
   const decremenet = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1)
     }
   }
@@ -40,6 +50,7 @@ const Detail = () => {
       setQuantity(quantity + 1)
     }
   }
+console.log(product);
 
   return (
     <div className='min-h-screen'>
