@@ -40,7 +40,7 @@ const Auth = () => {
         }
     },[isAuth])
 
-    console.log(user, isAuth, "user");
+    
     
     return (
         <div className='min-h-screen flex items-center justify-center'>

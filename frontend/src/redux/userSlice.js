@@ -78,7 +78,13 @@ export const resetPassword = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        logoutUser: (state) => {
+            state.user = {};
+            state.isAuth = false;
+            state.loading = false;
+          }
+    },
     extraReducers: (builder) => {
         builder.addCase(register.pending, (state, action) => {
             state.loading = true;
@@ -137,6 +143,6 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { } = userSlice.actions
+export const { logoutUser } = userSlice.actions
 
 export const userReducer = userSlice.reducer

@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Cart from "./pages/Cart";
+import Admin from "./pages/Admin";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,9 +40,15 @@ function App() {
         <Route path="/forgot" element={<ForgotPassword />} />
         <Route path="/reset/:token" element={<ResetPassword />} />
         <Route path="/cart" element={<Cart />} />
-        <Route  element={<ProtectedRoute />} > 
+
+        <Route  element={<ProtectedRoute isAdmin = {false} />} > 
         <Route path="/profile" element={<Profile />} />
         </Route>
+
+        <Route  element={<ProtectedRoute isAdmin = {true} user = {user} />} > 
+        <Route path="/admin" element={<Admin />} />
+        </Route>
+
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<Detail />} />
       </Routes>

@@ -3,6 +3,7 @@ import { LuShoppingBasket } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getKeyword } from '../redux/generalSlice';
+import { logoutUser } from '../redux/userSlice';
 
 
 
@@ -39,21 +40,39 @@ const Header = () => {
 
 
   const menuFunc = async (item) => {
+    // Kullanıcı çıkış yapmak istiyor ama zaten çıkış yapmışsa hiçbir şey yapma
     if (item.name === "Çıkış") {
+      if (!isAuth) return;
+  
       try {
         await fetch("http://localhost:4000/logout", {
           method: "GET",
           credentials: "include"
         });
         localStorage.clear();
-        window.location.href = "/"; // navigate ile bazen takılabiliyor
+        dispatch(logoutUser());
+  
+        // Anasayfaya yönlendir
+        if (window.location.pathname !== "/") {
+          navigate("/");
+
+        }
+  
       } catch (err) {
         console.error("Çıkış sırasında hata:", err);
       }
-    } else {
+    } 
+    // Kullanıcı profil'e gitmek istiyor ama login değilse -> auth'a gönder
+    else if (item.name === "Profil" && !isAuth) {
+      navigate("/auth");
+    } 
+    // Diğer her şey normal yönlendirilsin
+    else {
       navigate(item.url);
     }
-  }
+  };
+  
+  
 
   return (
     <div className='bg-orange-100 h-16 px-5 flex items-center justify-between '>

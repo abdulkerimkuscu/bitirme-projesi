@@ -1,7 +1,8 @@
-import {  createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   keyword : ""
+  keyword: "",
+  openModal: false
 }
 
 
@@ -11,13 +12,16 @@ export const generalSlice = createSlice({
   initialState,
   reducers: {
     getKeyword: (state, action) => {
-        state.keyword = action.payload
+      state.keyword = action.payload
+    },
+    openModalFunc: (state, action) => {
+      state.openModal = !state.openModal
     }
   },
-  
+
 })
 
 // Action creators are generated for each case reducer function
-export const { getKeyword } = generalSlice.actions
+export const { getKeyword, openModalFunc } = generalSlice.actions
 
 export const generalReducer = generalSlice.reducer

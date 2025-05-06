@@ -1,13 +1,21 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({isAdmin, user} ) => {
     const token = localStorage.getItem("token")
-  return (
-    <div>
-        {token ? <Outlet/> : <Navigate to={"/auth"}/> } 
-    </div>
-  )
+
+    if (isAdmin && user?.role === "admin") {
+      return <Outlet/> 
+    }
+
+    if (!isAdmin && token) {
+      return <Outlet/> 
+    }
+
+
+         <Navigate to={"/"}/> 
+   
+  
 }
 
 export default ProtectedRoute
