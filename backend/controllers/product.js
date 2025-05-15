@@ -79,13 +79,13 @@ const createProducts = async(req,res,next) => {
 
 const deleteProducts = async(req,res,next) => {
     const product = await Products.findById(req.params.id);
-
+    console.log(product);
     for (let i = 0; i < product.length; i++) {
         await cloudinary.uploader.destroy(product.images[i].public_id);
         
     }
 
-    await product.remove();
+    await Products.findByIdAndDelete(req.params.id);
     res.status(200).json({
         message: "Ürün başarıyla silindi..."
     })

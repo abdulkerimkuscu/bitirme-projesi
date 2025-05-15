@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { BsHeart } from "react-icons/bs";
 
-const ProductCard = ({ edit, product }) => {
+const ProductCard = ({ edit, product, onEdit, onDelete }) => {
     const navigate = useNavigate();
 
     const settings = {
@@ -23,6 +23,15 @@ const ProductCard = ({ edit, product }) => {
             style: 'currency',
             currency: 'TRY'
         }).format(price);
+    };
+
+    const handleClick = (e, action) => {
+        e.stopPropagation(); // Prevent navigation when clicking edit/delete
+        if (action === 'edit') {
+            onEdit && onEdit();
+        } else if (action === 'delete') {
+            onDelete && onDelete();
+        }
     };
 
     return (
@@ -57,10 +66,18 @@ const ProductCard = ({ edit, product }) => {
                     </button>
                     {edit && (
                         <>
-                            <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" title="Düzenle">
+                            <button 
+                                onClick={(e) => handleClick(e, 'edit')}
+                                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" 
+                                title="Düzenle"
+                            >
                                 <MdEdit className="text-blue-600 w-5 h-5" />
                             </button>
-                            <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" title="Sil">
+                            <button 
+                                onClick={(e) => handleClick(e, 'delete')}
+                                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" 
+                                title="Sil"
+                            >
                                 <MdDelete className="text-red-600 w-5 h-5" />
                             </button>
                         </>

@@ -61,6 +61,37 @@ export const getProductsDetail = createAsyncThunk(
     }
 )
 
+export const deleteProduct = createAsyncThunk(
+    'admindelete',
+    async (id) => {
+        const token = localStorage.getItem("token")
+        const response = await fetch(`http://localhost:4000/product/${id}`, {
+            method: "DELETE",
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        return id;
+    }
+)
+
+export const updateProduct = createAsyncThunk(
+    'adminupdate',
+    async ({id, data}) => {
+        const token = localStorage.getItem("token")
+        const requestOptions = {
+            method: "PUT",
+            headers: { 
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        };
+        const response = await fetch(`http://localhost:4000/product/${id}`, requestOptions)
+        return (await response.json())
+    }
+)
+
 export const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -93,6 +124,22 @@ export const productSlice = createSlice({
     builder.addCase(addAdminProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.adminProducts = [...state.products, action.payload]
+    })
+    builder.addCase(deleteProduct.pending, (state, action) => {
+        state.loading = true;
+    })
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminProducts.products = state.adminProducts.products.filter(product => product._id !== action.payload)
+    })
+    builder.addCase(updateProduct.pending, (state, action) => {
+        state.loading = true;
+    })
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminProducts.products = state.adminProducts.products.map(product => 
+            product._id === action.payload.product._id ? action.payload.product : product
+        )
     })
   }
 })
