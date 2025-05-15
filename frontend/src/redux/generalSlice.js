@@ -24,11 +24,15 @@ export const generalSlice = createSlice({
         ...state.filters,
         ...action.payload
       }
+    },
+    resetFilters: (state) => {
+      state.filters = initialState.filters;
+      state.keyword = initialState.keyword;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getKeyword, openModalFunc, setFilters } = generalSlice.actions
+export const { getKeyword, openModalFunc, setFilters, resetFilters } = generalSlice.actions
 
 export const generalReducer = generalSlice.reducer

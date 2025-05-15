@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../redux/productSlice';
+import { resetFilters } from '../redux/generalSlice';
 import ProductCard from '../components/ProductCard';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
@@ -9,6 +10,7 @@ const Home = () => {
   const { products, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
+    dispatch(resetFilters());
     dispatch(
       getProducts({
         keyword: '',
