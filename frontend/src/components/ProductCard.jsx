@@ -60,22 +60,25 @@ const ProductCard = ({ edit, product, onEdit, onDelete }) => {
                     />
                 )}
                 
-                <div className="absolute top-2 right-2 z-10 flex gap-2">
-                    <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" title="Favorilere Ekle">
+                <div className="absolute top-2 right-2 z-40 flex gap-2">
+                    <button 
+                        className="p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all shadow-sm hover:shadow-md" 
+                        title="Favorilere Ekle"
+                    >
                         <BsHeart className="text-gray-700 w-5 h-5" />
                     </button>
                     {edit && (
                         <>
                             <button 
                                 onClick={(e) => handleClick(e, 'edit')}
-                                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" 
+                                className="p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all shadow-sm hover:shadow-md" 
                                 title="Düzenle"
                             >
                                 <MdEdit className="text-blue-600 w-5 h-5" />
                             </button>
                             <button 
                                 onClick={(e) => handleClick(e, 'delete')}
-                                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors" 
+                                className="p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all shadow-sm hover:shadow-md" 
                                 title="Sil"
                             >
                                 <MdDelete className="text-red-600 w-5 h-5" />
