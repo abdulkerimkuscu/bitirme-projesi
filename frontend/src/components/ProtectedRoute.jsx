@@ -13,7 +13,8 @@ const ProtectedRoute = ({isAdmin, user} ) => {
     }
 
 
-         <Navigate to={"/"}/> 
+        return <Navigate to={"/"} />;
+
    
   
 }
